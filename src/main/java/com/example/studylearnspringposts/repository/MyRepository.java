@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface MyRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT user FROM User A WHERE User.age >= :age")
+    @Query("SELECT u FROM User u WHERE u.age >= :age")
     List<User> findByAge(@Param("age") Integer age);
+
+    User findByUsernameAndPassword(String username, String password);
 
 }

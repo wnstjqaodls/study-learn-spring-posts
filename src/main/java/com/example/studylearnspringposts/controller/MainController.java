@@ -1,40 +1,68 @@
 package com.example.studylearnspringposts.controller;
 
-
-import com.example.studylearnspringposts.domain.post.vo.Post;
-import com.example.studylearnspringposts.service.PostService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.studylearnspringposts.dto.PostRequestDto;
+import com.example.studylearnspringposts.dto.PostResponseDto;
+import com.example.studylearnspringposts.domain.user.vo.User;
+import com.example.studylearnspringposts.service.UserService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 레거시 컨트롤러 (하위 호환성을 위해 유지)
+ * 새로운 API는 ApiGatewayController를 사용하세요
+ */
 @RestController
 public class MainController {
-    private final PostService postService;
+    
+    private final ApiGatewayController apiGatewayController;
+    private final UserService userService;
 
-    public MainController (PostService postService) {
-        this.postService = postService;
+    public MainController(ApiGatewayController apiGatewayController, UserService userService) {
+        this.apiGatewayController = apiGatewayController;
+        this.userService = userService;
     }
 
     @GetMapping("/demo")
     public String demo() {
-        return "Demo Page";
+        return "Demo Page - API Gateway Pattern Applied";
     }
 
-    // 전체 게시글 조회
-    @GetMapping
-    @RequestMapping("/posts")
-    public List<Post> getAllPosts() {
-        return postService.getAllPosts();
+    /**
+     * @deprecated 새로운 API 엔드포인트 /api/v1/posts 를 사용하세요
+     */
+    @Deprecated
+    @GetMapping("/board")
+    public List<PostResponseDto> getAllPosts() {
+        return apiGatewayController.getAllPosts();
     }
 
-    // 게시글 단건 조회
-    @GetMapping("/{id}")
-    public Post getPostById(@PathVariable Long id) {
-        return postService.getPostById(id);
+    /**
+     * @deprecated 새로운 API 엔드포인트 /api/v1/posts/{id} 를 사용하세요
+     */
+    @Deprecated
+    @GetMapping("/board/{id}")
+    public PostResponseDto getPostById(@PathVariable Long id) {
+        return apiGatewayController.getPostById(id);
     }
 
+    /**
+     * @deprecated 새로운 API 엔드포인트 /api/v1/posts 를 사용하세요
+     */
+    @Deprecated
+    @PostMapping("/board")
+    public PostResponseDto createPost(@RequestBody PostRequestDto dto) {
+        return apiGatewayController.createPost(dto);
+    }
 
+    // 로그인 (사용자 관련 기능은 별도 유지)
+    @PostMapping("/auth/login")
+    public String login(@RequestBody User loginUser) {
+        User user = userService.login(loginUser.getUsername(), loginUser.getPassword());
+        if (user != null) {
+            return "로그인 성공: " + user.getUsername();
+        } else {
+            return "로그인 실패";
+        }
+    }
 }
