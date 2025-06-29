@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MyRepository extends JpaRepository<User, Long> {
 
@@ -13,5 +14,9 @@ public interface MyRepository extends JpaRepository<User, Long> {
     List<User> findByAge(@Param("age") Integer age);
 
     User findByUsernameAndPassword(String username, String password);
-
+    
+    // 회원가입 및 로그인용 메서드 추가
+    Optional<User> findByUsername(String username);
+    
+    boolean existsByUsername(String username);
 }

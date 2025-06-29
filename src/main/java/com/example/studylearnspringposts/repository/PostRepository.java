@@ -17,5 +17,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
         List<Post> findAllByOrderByWriteDateDesc();
 
+        @Override
+        void deleteById (Long id);
 }
 

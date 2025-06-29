@@ -49,4 +49,20 @@ public class PostController {
         Optional<Post> post = postService.getPostById(id);
         return PostResponseDto.fromOptionalEntity(post);
     }
+    
+    /**
+     * 게시글 수정
+     */
+    public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto) {
+        Post updatedPost = postService.updatePost(id, postRequestDto);
+        return PostResponseDto.fromEntity(updatedPost);
+    }
+
+    /**
+     * 게시글 삭제
+     */
+    public void deletePost(Long id, PostRequestDto postRequestDto) {
+        postService.deletePost(id, postRequestDto);
+        // 성공적으로 삭제되면 void 반환 (예외가 발생하지 않으면 성공)
+    }
 } 

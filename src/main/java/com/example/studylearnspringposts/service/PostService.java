@@ -1,6 +1,8 @@
 package com.example.studylearnspringposts.service;
 
 import com.example.studylearnspringposts.domain.post.vo.Post;
+import com.example.studylearnspringposts.dto.PostRequestDto;
+import com.example.studylearnspringposts.exception.PostNotFoundException;
 import com.example.studylearnspringposts.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +32,39 @@ public class PostService {
     public Post createPost(Post post) {
         post.setWriteDate(LocalDateTime.now());
         return postRepository.save(post);
+    }
+
+    // 게시글 수정
+    public Post updatePost(Long id, PostRequestDto postRequestDto) {
+        // 기존 게시글 조회
+        Post existingPost = postRepository.findById(id)
+            .orElseThrow(() -> new PostNotFoundException("게시글을 찾을 수 없습니다"));
+        
+        // 비밀번호 검증
+        if (!existingPost.getPassword().equals(postRequestDto.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
+        }
+        
+        // 게시글 정보 업데이트
+        existingPost.setTitle(postRequestDto.getTitle());
+        existingPost.setAuthor(postRequestDto.getAuthor());
+        existingPost.setContent(postRequestDto.getContent());
+        
+        return postRepository.save(existingPost);
+    }
+
+    // 게시글 삭제
+    public void deletePost(Long id, PostRequestDto postRequestDto) {
+        // 기존 게시글 조회
+        Post existingPost = postRepository.findById(id)
+            .orElseThrow(() -> new PostNotFoundException("게시글을 찾을 수 없습니다"));
+
+        // 비밀번호 검증
+        if (!existingPost.getPassword().equals(postRequestDto.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
+        }
+
+        postRepository.deleteById(existingPost.getId());
+        // 성공적으로 삭제되면 void  (예외가 발생하지 않으면 성공으로 간주)
     }
 }

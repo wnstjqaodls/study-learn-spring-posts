@@ -2,6 +2,7 @@ package com.example.studylearnspringposts.controller;
 
 import com.example.studylearnspringposts.dto.PostRequestDto;
 import com.example.studylearnspringposts.dto.PostResponseDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,5 +57,24 @@ public class ApiGatewayController {
     @GetMapping("/posts/{id}")
     public PostResponseDto getPostById(@PathVariable Long id) {
         return postController.getPostById(id);
+    }    /**
+
+     * 선택한 게시글 수정 API
+     * - 선택한 게시글의 id 에 해당하는 수정을 처리함
+     */
+    @PutMapping("/posts/{id}")
+    public PostResponseDto putPostById(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
+        return postController.updatePost(id,postRequestDto);
+    }
+
+    /**
+     * 선택한 게시글 삭제 API
+     * - 선택한 게시글의 id 에 해당하는 게시글 삭제 처리함
+     * - 비밀번호 검증 후 삭제
+     */
+    @DeleteMapping("/posts/{id}")
+    public ResponseEntity<String> deletePostById(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
+        postController.deletePost(id, postRequestDto);
+        return ResponseEntity.ok("게시글이 성공적으로 삭제되었습니다.");
     }
 } 

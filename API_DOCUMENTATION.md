@@ -144,7 +144,7 @@ GET /board/{id}      # 특정 게시글 조회
 ## 🛠️ 기술 스택
 
 - **Framework**: Spring Boot 3.5.0
-- **Java**: OpenJDK 17.0.15 (Microsoft Build)
+- **Java**: OpenJDK 17.0.15 (Microsoft Build) -> 처음알게된 부분 
 - **Database**: H2 (인메모리)
 - **ORM**: Hibernate 6.6.15.Final
 - **Persistence API**: Jakarta Persistence 3.x
@@ -173,7 +173,10 @@ $env:JAVA_HOME="C:\Users\{username}\.jdks\ms-17.0.15"
 
 ## 🐛 문제 해결 과정
 
-### 1. Java 버전 호환성 문제
+### 0. 빌드도구 Gradle 의 JDK 버전문제
+-> 프로젝트 초기 생성후 JDK 11버전으로 default 로 지정이 되어있어서 생긴문제..
+
+### 1. JAVA 호환성 문제
 **문제**: Spring Boot 3.5는 JDK 17이 필수이지만 JDK 11 환경에서 개발 시작
 ```
 UnsupportedClassVersionError: class file version 61.0
@@ -237,15 +240,14 @@ Table "POST" not found (this database is empty)
 
 1. **인증/인가 시스템 추가**
    - JWT 토큰 기반 인증
-   - 역할 기반 접근 제어 (RBAC)
+   - 역할 기반 접근 제어 (RBAC) -> 현재는 우선순위 낮음
 
 2. **데이터베이스 영속화**
    - H2 → PostgreSQL/MySQL 마이그레이션
-   - 데이터베이스 마이그레이션 스크립트
+   - 데이터베이스 마이그레이션 스크립트 -> 이행 단계
 
 3. **API 문서 자동화**
-   - OpenAPI 3.0 (Swagger) 통합
-   - 인터랙티브 API 문서
+   - OpenAPI 3.0 (Swagger) 통합 -> Swagger 안써봤음
 
 4. **마이크로서비스 분리**
    - 사용자 서비스 분리
@@ -260,9 +262,9 @@ Table "POST" not found (this database is empty)
 - [x] 게시글 CRUD 기능 정상 작동
 - [x] 레거시 API 호환성 유지
 - [x] 예외 처리 및 에러 응답 구현
-- [x] 데이터베이스 연동 및 정렬 기능
+- [x] 데이터베이스 연동 및 정렬 기능 -> 필요시
 - [x] 모든 엔드포인트 테스트 완료
 
 **최종 업데이트**: 2025-06-20  
-**개발자**: AI Assistant  
+**작성자**: 김준섭  
 **상태**: ✅ 완료 

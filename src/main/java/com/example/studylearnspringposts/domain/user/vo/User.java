@@ -1,6 +1,6 @@
 package com.example.studylearnspringposts.domain.user.vo;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
