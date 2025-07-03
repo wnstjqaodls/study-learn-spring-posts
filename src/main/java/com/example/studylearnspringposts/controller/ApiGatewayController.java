@@ -75,6 +75,6 @@ public class ApiGatewayController {
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<String> deletePostById(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
         postController.deletePost(id, postRequestDto);
-        return ResponseEntity.ok("게시글이 성공적으로 삭제되었습니다.");
+        return ResponseEntity.ok("게시글이 성공적으로 삭제되었습니다."+"\n삭제된 게시글 번호 : "+id);
     }
 } 

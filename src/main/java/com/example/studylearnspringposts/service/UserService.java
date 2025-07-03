@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
+   /* @Autowired
     private MyRepository userRepository;
     
     @Autowired
@@ -88,5 +88,5 @@ public class UserService {
             token, 
             "로그인이 성공적으로 완료되었습니다"
         );
-    }
+    }*/
 }

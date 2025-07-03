@@ -54,15 +54,4 @@ public class MainController {
     public PostResponseDto createPost(@RequestBody PostRequestDto dto) {
         return apiGatewayController.createPost(dto);
     }
-
-    // 로그인 (사용자 관련 기능은 별도 유지)
-    @PostMapping("/auth/login")
-    public String login(@RequestBody User loginUser) {
-        User user = userService.login(loginUser.getUsername(), loginUser.getPassword());
-        if (user != null) {
-            return "로그인 성공: " + user.getUsername();
-        } else {
-            return "로그인 실패";
-        }
-    }
 }

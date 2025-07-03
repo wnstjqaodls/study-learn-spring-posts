@@ -5,12 +5,14 @@ import com.example.studylearnspringposts.dto.PostRequestDto;
 import com.example.studylearnspringposts.exception.PostNotFoundException;
 import com.example.studylearnspringposts.repository.PostRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true) // 읽기 전용 트랜잭션을 기본으로 설정
 public class PostService {
     private final PostRepository postRepository;
 
@@ -29,12 +31,14 @@ public class PostService {
     }
 
     // 게시글 작성
+    @Transactional // 쓰기 작업이므로 readOnly = false (기본값)
     public Post createPost(Post post) {
         post.setWriteDate(LocalDateTime.now());
         return postRepository.save(post);
     }
 
     // 게시글 수정
+    @Transactional // 쓰기 작업이므로 readOnly = false (기본값)
     public Post updatePost(Long id, PostRequestDto postRequestDto) {
         // 기존 게시글 조회
         Post existingPost = postRepository.findById(id)
@@ -54,6 +58,7 @@ public class PostService {
     }
 
     // 게시글 삭제
+    @Transactional // 쓰기 작업이므로 readOnly = false (기본값)
     public void deletePost(Long id, PostRequestDto postRequestDto) {
         // 기존 게시글 조회
         Post existingPost = postRepository.findById(id)

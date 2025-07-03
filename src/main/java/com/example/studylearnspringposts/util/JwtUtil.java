@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-    
+    /*
     @Value("${jwt.secret:mySecretKey12345678901234567890123456789012345}")
     private String secret;
     
@@ -81,5 +81,5 @@ public class JwtUtil {
     // 토큰에서 역할 추출
     public String getRoleFromToken(String token) {
         return getAllClaimsFromToken(token).get("role", String.class);
-    }
+    }*/
 } 
