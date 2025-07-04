@@ -3,17 +3,56 @@ package com.example.studylearnspringposts.service;
 import com.example.studylearnspringposts.domain.user.vo.User;
 import com.example.studylearnspringposts.dto.UserRequestDto;
 import com.example.studylearnspringposts.dto.UserResponseDto;
+import com.example.studylearnspringposts.exception.GlobalExceptionHandler;
 import com.example.studylearnspringposts.repository.MyRepository;
 import com.example.studylearnspringposts.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
+
+    private final MyRepository myRepository;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    // 세터 주입 활용해봄
+    public UserService(MyRepository myRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.myRepository = myRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    public void signup (UserRequestDto userRequestDto) {
+
+        // 회원이존재하는지 검증
+        // DB에 중복된 username이 없다면 회원을 저장하고 Client 로 성공했다는 메시지, 상태코드 반환하기
+
+        boolean isExist = myRepository.existsByUsername(userRequestDto.getUsername());
+
+        if (isExist) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미존재하는 사용자입니다.");
+        }
+
+        User newUser = new User();
+
+        newUser.setUsername(userRequestDto.getUsername());
+//        newUser.setPassword(userRequestDto.getPassword()); // 그대로 저장하면 위험!
+        newUser.setPassword(bCryptPasswordEncoder.encode(userRequestDto.getPassword()));
+        newUser.setRole("ROLE_USER");
+
+        myRepository.save(newUser);
+
+
+    }
+
+
 
    /* @Autowired
     private MyRepository userRepository;

@@ -1,8 +1,9 @@
 package com.example.studylearnspringposts.controller;
 
 import com.example.studylearnspringposts.dto.UserRequestDto;
-import com.example.studylearnspringposts.dto.UserResponseDto;
 import com.example.studylearnspringposts.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -10,8 +11,35 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = "*")
 public class AuthController {
+
+    @Autowired
+    private final UserService userService; // Autowired 로 필드주입을 받아도되지만 아래의 문제가있다고함
+//    테스트 어려움: Mock 주입이 힘들어
+//
+//    순환참조 문제 추적 어려움
+//
+//    불변 객체 아님
+
+    // 따라서 생성자 주입 > 불변객체
+    public AuthController (UserService userService) {
+        this.userService = userService;
+    }
+
+    // 컨트롤러에서 UserRequDto 에 등록해놓은 Bean Valid에대한 부분이 적용되게됨.
+    @PostMapping("/signup")
+    public ResponseEntity signup(@Valid @RequestBody UserRequestDto userRequestDto) {
+
+
+
+        userService.signup(userRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body("회원가입 성공했습니다");
+    }
+
+
+
+
+
     
  /*   private final UserService userService;
     
