@@ -1,12 +1,12 @@
 package com.example.studylearnspringposts.controller;
 
 import com.example.studylearnspringposts.dto.UserRequestDto;
+import com.example.studylearnspringposts.dto.UserResponseDto;
 import com.example.studylearnspringposts.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,11 +29,32 @@ public class AuthController {
     // 컨트롤러에서 UserRequDto 에 등록해놓은 Bean Valid에대한 부분이 적용되게됨.
     @PostMapping("/signup")
     public ResponseEntity signup(@Valid @RequestBody UserRequestDto userRequestDto) {
-
-
-
         userService.signup(userRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body("회원가입 성공했습니다");
+    }
+    
+    /**
+     * JWT 로그인 API
+     * - username/password 검증
+     * - JWT 토큰 발급
+     */
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserRequestDto userRequestDto) {
+        try {
+            UserResponseDto response = userService.loginWithJwt(
+                userRequestDto.getUsername(), 
+                userRequestDto.getPassword()
+            );
+            
+            // JWT 토큰을 헤더에 추가
+            return ResponseEntity.ok()
+                    .header("Authorization", "Bearer " + response.getToken())
+                    .body(response);
+                    
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("로그인 실패: " + e.getMessage());
+        }
     }
 
 
