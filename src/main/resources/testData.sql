@@ -1,6 +1,8 @@
--- 사용자 테스트 데이터
-INSERT INTO users (username, password, role, age) VALUES ('testuser', 'password1', 'USER', 25);
-INSERT INTO users (username, password, role, age) VALUES ('admin', 'adminpass', 'ADMIN', 30);
+-- 사용자 테스트 데이터 (BCrypt 암호화된 비밀번호)
+-- testuser : password123
+INSERT INTO users (username, password, role, age) VALUES ('testuser', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'ROLE_USER', 25);
+-- admin : admin123  
+INSERT INTO users (username, password, role, age) VALUES ('admin', '$2a$10$X5wFBtLrL/kHcmrOewaOdOGNd5A4mBYyAs8kcIKKhLSLlVdZWrYoO', 'ROLE_ADMIN', 30);
 
 -- 게시글 테스트 데이터  
 INSERT INTO post (title, author, password, content, write_date, created_date, updated_date) VALUES 
