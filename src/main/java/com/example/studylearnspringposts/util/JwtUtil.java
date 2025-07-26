@@ -1,6 +1,7 @@
 package com.example.studylearnspringposts.util;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-    /*
+    
     @Value("${jwt.secret:mySecretKey12345678901234567890123456789012345}")
     private String secret;
     
@@ -81,5 +82,5 @@ public class JwtUtil {
     // 토큰에서 역할 추출
     public String getRoleFromToken(String token) {
         return getAllClaimsFromToken(token).get("role", String.class);
-    }*/
+    }
 } 

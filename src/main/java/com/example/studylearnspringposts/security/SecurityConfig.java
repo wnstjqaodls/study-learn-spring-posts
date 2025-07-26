@@ -1,5 +1,6 @@
 package com.example.studylearnspringposts.security;
 
+import com.example.studylearnspringposts.util.JwtUtil;
 import com.example.studylearnspringposts.util.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JwtUtil jwtUtil;
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration) {
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JwtUtil jwtUtil) {
         this.authenticationConfiguration = authenticationConfiguration;
+        this.jwtUtil = jwtUtil;
     }
 
     @Bean
@@ -41,8 +44,8 @@ public class SecurityConfig {
             );
 
         // jwt 로그인연동위한 : 필터등록 > At은 대체를함.
-        // LoginFilter 에 인자로넘기기위해 새로운 Bena을 등록해야함 > AuthenticationManager
-        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class); // 두번재인자는 위치
+        // LoginFilter 에 인자로넘기기위해 새로운 Bean을 등록해야함 > AuthenticationManager
+        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class); // 두번재인자는 위치
 
         // jwt 에서는 stateless 하게 관리하기위해 세션설정을 추가로해준다.
         http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
